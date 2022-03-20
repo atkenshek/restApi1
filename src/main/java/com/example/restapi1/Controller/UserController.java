@@ -1,5 +1,6 @@
 package com.example.restapi1.Controller;
 
+import com.example.restapi1.Entity.IPFinder;
 import com.example.restapi1.Entity.User;
 import com.example.restapi1.Service.UserServiceImpl;
 import com.example.restapi1.exception.ResourceNotFoundException;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     UserServiceImpl userService;
+    IPFinder ipFinder;
 
     @Autowired
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
+
 
     @GetMapping("/users")
     public Iterable<User> getUsers(){
@@ -43,5 +46,6 @@ public class UserController {
     public User deleteUser(@PathVariable(value = "id") Long userId) throws Exception{
         return userService.deleteUser(userId);
     }
-
 }
+
+

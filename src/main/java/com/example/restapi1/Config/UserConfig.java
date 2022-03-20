@@ -25,6 +25,12 @@ public class UserConfig {
                     "87024141234",
                     "alex1244@mail.ru"
             );
+            User user3 = new User(
+                    "Maria Anatolievna",
+                    "Female",
+                    "87003242355",
+                    "maria1978@gmail.com"
+            );
             repository.saveAll(
                     List.of(user,user2)
             );
