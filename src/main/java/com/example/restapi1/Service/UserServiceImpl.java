@@ -3,7 +3,9 @@ package com.example.restapi1.Service;
 import com.example.restapi1.Entity.User;
 import com.example.restapi1.Repository.UserRepo;
 import com.example.restapi1.exception.ResourceNotFoundException;
+import com.example.restapi1.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,16 @@ public class UserServiceImpl implements UserServiceInterface{
     }
 
     @Override
-    public User createUser(User user) {
-        log.info("Saving new user {} to the database", user.getFullName());
-        return userRepo.save(user);
+    public User createUser(User user) throws UserAlreadyExistsException {
+        User userNew = new User();
+        if (!userRepo.existsByEmail(user.getEmail())) {
+            log.info("Saving new user {} to the database", user.getFullName());
+            userNew = userRepo.save(user);
+        } else {
+            log.warn("User with email {} already exists in database", user.getEmail());
+            throw new UserAlreadyExistsException("User with email: " + user.getEmail() + " already exists in database");
+        }
+        return userNew;
     }
 
     @Override

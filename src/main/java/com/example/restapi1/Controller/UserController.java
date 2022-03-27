@@ -1,9 +1,9 @@
 package com.example.restapi1.Controller;
 
-import com.example.restapi1.Entity.IPFinder;
 import com.example.restapi1.Entity.User;
 import com.example.restapi1.Service.UserServiceImpl;
 import com.example.restapi1.exception.ResourceNotFoundException;
+import com.example.restapi1.exception.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     UserServiceImpl userService;
-    IPFinder ipFinder;
 
     @Autowired
     public UserController(UserServiceImpl userService) {
@@ -25,8 +24,8 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PostMapping("/save")
-    public User createUser(@RequestBody User user){
+    @PostMapping("/users/save")
+    public User saveUser(@RequestBody User user) throws UserAlreadyExistsException {
         return userService.createUser(user);
     }
 
