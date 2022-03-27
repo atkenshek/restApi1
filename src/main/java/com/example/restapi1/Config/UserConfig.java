@@ -17,22 +17,28 @@ public class UserConfig {
                     "Meiram Sopy Temirzhanov",
                     "Male",
                     "87477775454",
-                    "random9804@yandex.ru"
+                    "random9804@yandex.ru",
+                    "Kazakhstan",
+                    "Nur-Sultan"
             );
             User user2 = new User(
                     "Alex Johnson",
                     "Male",
                     "87024141234",
-                    "alex1244@mail.ru"
+                    "alex1244@mail.ru",
+                    "USA",
+                    "New-York"
             );
             User user3 = new User(
                     "Maria Anatolievna",
                     "Female",
                     "87003242355",
-                    "maria1978@gmail.com"
+                    "maria1978@gmail.com",
+                    "France",
+                    "Paris"
             );
             repository.saveAll(
-                    List.of(user,user2)
+                    List.of(user,user2, user3)
             );
         };
     }
