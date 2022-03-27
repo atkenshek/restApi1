@@ -15,8 +15,16 @@ public class GlobalExceptionHandler {
                 new ErrorResponse(new Date(), HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler({UserAlreadyExistsException.class})
     public ResponseEntity<?> userAlreadyExistsException(UserAlreadyExistsException ex, WebRequest request){
+        ErrorResponse errorDetails =
+                new ErrorResponse(new Date(), HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({StatusFailedException.class})
+    public ResponseEntity<?> userAlreadyExistsException(StatusFailedException ex, WebRequest request){
         ErrorResponse errorDetails =
                 new ErrorResponse(new Date(), HttpStatus.NOT_FOUND.toString(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);

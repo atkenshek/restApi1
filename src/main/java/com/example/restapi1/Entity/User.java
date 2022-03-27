@@ -30,13 +30,22 @@ public class User {
     private String email;
     private String country;
     private String city;
+    private String ISP;
 
-    public User(String fullName, String gender, String phoneNumber, String email, String country, String city) {
+    public User(String fullName, String gender, String phoneNumber, String email, String country, String city, String ISP) {
         this.fullName = fullName;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.country = country;
         this.city = city;
+        this.ISP = ISP;
+    }
+
+    public User(String fullName, String gender, String phoneNumber, String email) {
+        this.fullName = fullName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 }
