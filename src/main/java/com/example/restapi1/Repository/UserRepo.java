@@ -1,6 +1,6 @@
 package com.example.restapi1.Repository;
 
-import com.example.restapi1.Entity.User;
+import com.example.restapi1.Business.Entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package com.example.restapi1.Service;
+package com.example.restapi1.Business.Service;
 
-import com.example.restapi1.Entity.User;
+import com.example.restapi1.Business.Entity.User;
 import com.example.restapi1.Repository.UserRepo;
 import com.example.restapi1.exception.StatusFailedException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.*;
+import java.net.URL;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserServiceInterface{
         }
         return userNew;
     }
+
     private String getPublicIpAddress() {
         // Find public IP address
         String publicIP = "";
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserServiceInterface{
         }
         return publicIP;
     }
-    public User saveUserNew(User user) throws JsonProcessingException, UserAlreadyExistsException, StatusFailedException{
+    public User saveUserWithCountry(User user) throws JsonProcessingException, UserAlreadyExistsException, StatusFailedException{
             String userIP = getPublicIpAddress();
             String userInfo = restTemplate.getForObject("http://ip-api.com/json/" + userIP + "?fields=status,country,city,as", String.class);
             ObjectMapper mapper = new ObjectMapper();
@@ -90,13 +91,14 @@ public class UserServiceImpl implements UserServiceInterface{
     }
 
     @Override
-    public User updateUser(Long id, User userDetails) throws ResourceNotFoundException {
+    public void updateUserById(Long id, User userDetails) throws ResourceNotFoundException {
         User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found for: " + id));
         user.setFullName(userDetails.getFullName());
         user.setGender(userDetails.getGender());
-        user.setEmail(userDetails.getEmail());
         user.setPhoneNumber(userDetails.getPhoneNumber());
-        return userRepo.save(user);
+        user.setEmail(userDetails.getEmail());
+        userRepo.save(user);
+
     }
 
     @Override
@@ -105,10 +107,15 @@ public class UserServiceImpl implements UserServiceInterface{
     }
 
     @Override
-    public User deleteUser(Long id) throws ResourceNotFoundException {
+    public void deleteUserById(Long id) throws ResourceNotFoundException {
         User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found for: " + id));
         userRepo.delete(user);
-        return user;
     }
+
+    @Override
+    public void deleteAllUsers(){
+        userRepo.deleteAll();
+    }
+
 
 }

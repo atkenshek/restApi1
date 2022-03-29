@@ -1,7 +1,7 @@
 package com.example.restapi1.Controller;
 
-import com.example.restapi1.Entity.User;
-import com.example.restapi1.Service.UserServiceImpl;
+import com.example.restapi1.Business.Entity.User;
+import com.example.restapi1.Business.Service.UserServiceImpl;
 import com.example.restapi1.exception.ResourceNotFoundException;
 import com.example.restapi1.exception.StatusFailedException;
 import com.example.restapi1.exception.UserAlreadyExistsException;
@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.net.UnknownHostException;
 
 @RestController
 public class UserController {
@@ -24,11 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @PostMapping("/user")
-    public ResponseEntity<User> saveUser(@RequestBody User user, HttpServletRequest request) throws UserAlreadyExistsException, JsonProcessingException, StatusFailedException {
-          User newUser =  userService.saveUserNew(user);
-          return ResponseEntity.ok(newUser);
+    @GetMapping("/user")
+    public Iterable<User> getUsers(){
+        return userService.getUsers();
     }
 
     @GetMapping("/user/{id}")
@@ -37,22 +33,30 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-    @GetMapping("/users")
-    public Iterable<User> getUsers(){
-        return userService.getUsers();
-    }
-
-    @PutMapping("/user/update/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId, @RequestBody User userDetails) throws ResourceNotFoundException {
-        final User userNew = userService.updateUser(userId, userDetails);
-        return ResponseEntity.ok(userNew);
-    }
-
-    @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable(value = "id") Long userId) throws Exception{
-        User newUser =  userService.deleteUser(userId);
+    @PostMapping("/user")
+    public ResponseEntity<User> saveUser(@RequestBody User user, HttpServletRequest request) throws UserAlreadyExistsException, JsonProcessingException, StatusFailedException {
+        User newUser =  userService.saveUserWithCountry(user);
         return ResponseEntity.ok(newUser);
     }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable(value = "id") Long userId, @RequestBody User userDetails) throws ResourceNotFoundException {
+        userService.updateUserById(userId, userDetails);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/user")
+    public ResponseEntity<Void> deleteAllUsers() {
+        userService.deleteAllUsers();
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable(value = "id") Long userId) throws Exception{
+        userService.deleteUserById(userId);
+        return ResponseEntity.ok().build();
+    }
+
 }
 
 
