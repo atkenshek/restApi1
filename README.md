@@ -40,7 +40,7 @@ The app defines following CRUD APIs.
 | Method | Url | Description | Sample Valid Request Body |
 | ------ | --- | ----------- | ------------------------- |
 | GET    | /api/user/ | Get all users | |
-| GET    | /api/users/{userId} | Get user by id | |
+| GET    | /api/user/{userId} | Get user by id | |
 | POST   | /api/user | Add new user | [JSON](#post) |
 | PUT    | /api/user/{userId} | Update user by id | [JSON](#put) |
 | DELETE | /api/user/{userId} | Delete user by id | |
