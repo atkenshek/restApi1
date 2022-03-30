@@ -2,7 +2,6 @@ package com.example.restapi1;
 
 import com.example.restapi1.Business.Entity.User;
 import com.example.restapi1.Business.Service.UserServiceImpl;
-import com.example.restapi1.exception.ResourceNotFoundException;
 import com.example.restapi1.exception.StatusFailedException;
 import com.example.restapi1.exception.UserAlreadyExistsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +15,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -45,7 +46,7 @@ class RestApi1ApplicationTests {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<String> response = testRestTemplate.exchange(getUrl() + "/users",
+        ResponseEntity<String> response = testRestTemplate.exchange(getUrl() + "/user",
                 HttpMethod.GET, entity, String.class);
 
         Assertions.assertNotNull(response.getBody());
@@ -54,7 +55,7 @@ class RestApi1ApplicationTests {
     @Test
     public void testGetUserById(){
         User expectedUser = new User(
-               "Meiram Sopy Temirzhanov",
+                "Meiram Sopy Temirzhanov",
                 "Male",
                 "87477775454",
                 "meiram@gmail.com"
@@ -82,13 +83,13 @@ class RestApi1ApplicationTests {
     }
 
     @Test
-    public void testUpdateUser() throws StatusFailedException, UserAlreadyExistsException, JsonProcessingException, ResourceNotFoundException {
+    public void testUpdateUser()  {
         int id = 1;
-        User user =  testRestTemplate.getForObject(getUrl() + "/users/" + id, User.class);
+        User user =  testRestTemplate.getForObject(getUrl() + "/user/" + id, User.class);
         user.setFullName("Meiram Sopy Temirzhanov");
 
-        testRestTemplate.put(getUrl() + "/users", id, user);
-        User updateUser = testRestTemplate.getForObject(getUrl() + "/users" + id, User.class);
+        testRestTemplate.put(getUrl() + "/user", id, user);
+        User updateUser = testRestTemplate.getForObject(getUrl() + "/user" + id, User.class);
 
         Assertions.assertNotNull(updateUser);
     }
@@ -109,14 +110,17 @@ class RestApi1ApplicationTests {
     }
 
     @Test
-    public void testDeleteAllUsers(){
-        testRestTemplate.delete(getUrl() + "/user");
-        try {
-            testRestTemplate.getForObject(getUrl() + "/user", User.class);
-        } catch (final HttpClientErrorException e){
-            assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
-        }
+    public void testDeleteAllUsers() throws StatusFailedException, UserAlreadyExistsException, JsonProcessingException {
+        User expectedUser = new User(
+                "Meiram Sopy Temirzhanov",
+                "Male",
+                "87477775454",
+                "meiram@gmail.com"
+        );
+        userService.saveUserWithCountry(expectedUser);
+        userService.deleteAllUsers();
+        User user = testRestTemplate.getForObject(getUrl() + "/user/1", User.class);
+        assertThat(user.getId()).isNull();
     }
-
 
 }

@@ -22,36 +22,36 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/api//user")
     public Iterable<User> getUsers(){
         return userService.getUsers();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/api//user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable(value="id") Long userId) throws ResourceNotFoundException{
         final User user = userService.getUserById(userId);
         return ResponseEntity.ok().body(user);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/api/user")
     public ResponseEntity<User> saveUser(@RequestBody User user, HttpServletRequest request) throws UserAlreadyExistsException, JsonProcessingException, StatusFailedException {
         User newUser =  userService.saveUserWithCountry(user);
         return ResponseEntity.ok(newUser);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/api/user/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable(value = "id") Long userId, @RequestBody User userDetails) throws ResourceNotFoundException {
         userService.updateUserById(userId, userDetails);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/api/user")
     public ResponseEntity<Void> deleteAllUsers() {
         userService.deleteAllUsers();
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/api/user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable(value = "id") Long userId) throws Exception{
         userService.deleteUserById(userId);
         return ResponseEntity.ok().build();
