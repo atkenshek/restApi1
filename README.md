@@ -67,7 +67,7 @@ The app defines following CRUD APIs.
 
 }
 ```
-### Example of GET requesting
+##### Example of GET requesting
 ```json
 {
     "id": 1,
