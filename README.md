@@ -67,7 +67,7 @@ The app defines following CRUD APIs.
 
 }
 ```
-###Example of GET requesting
+### Example of GET requesting
 ```json
 {
     "id": 1,
@@ -80,4 +80,4 @@ The app defines following CRUD APIs.
     "isp": "AS9198 JSC Kazakhtelecom"
 }
 ```
-#####The API takes IP of user which requesting api, and sets a country, city and ISP.
+##### The API takes IP of user which requesting api, and sets a country, city and ISP.
