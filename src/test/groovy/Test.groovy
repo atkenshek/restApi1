@@ -1,24 +1,18 @@
 import com.example.restapi1.RestApi1Application
 import com.example.restapi1.business.entity.User
 import com.example.restapi1.business.service.UserServiceImpl
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.web.client.HttpClientErrorException
 import spock.lang.Specification
-
-import static org.junit.jupiter.api.Assertions.assertEquals
-import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertEquals
 
-
+@SpringBootTest(classes = RestApi1Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class Test extends Specification{
-
-
-    def user = Mock(User)
 
     @Autowired
     private UserServiceImpl userService;
@@ -38,20 +32,20 @@ class Test extends Specification{
         1 + 1 == 2
     }
 
-//    def "should create user"(){
-//        given:
-//        User expectedUser = new User(
-//                "Meiram Sopy Temirzhanov",
-//                "Male",
-//                "87477775454",
-//                "meiram@gmail.com"
-//        )
-//        when:
-//        User expectedUser2 = userService.saveUserWithCountry(expectedUser);
-//
-//        then:
-//        expectedUser.equals(expectedUser2);
-//    }
+    def "should return user by id"(){
+        given:
+        User expectedUser = new User(
+                "Meiram Sopy Temirzhanov",
+                "Male",
+                "87477775454",
+                "meiram@gmail.com"
+        );
+        when:
+        User userTakenById = testRestTemplate.getForObject(getUrl() + "/user/1", User.class);
+
+        then:
+        userTakenById.getId() == expectedUser.getId();
+    }
     def "should create user"(){
         given:
         User expectedUser = new User(
@@ -72,10 +66,53 @@ class Test extends Specification{
 
     }
 
-    def "should delete user"(){
+    def "should update user"(){
+        given:
+        int id = 1;
+        User user =  testRestTemplate.getForObject(getUrl() + "/user/" + id, User.class);
+        user.setFullName("Meiram Sopy Temirzhanov");
+
+        when:
+        testRestTemplate.put(getUrl() + "/user", id, user);
+
+        then:
+        User updatedUser = testRestTemplate.getForObject(getUrl() + "/user" + id, User.class);
+        updatedUser.getFullName() == "Meiram Sopy Temirzhanov";
+
+    }
+
+    def "should delete user by id"(){
         given:
         int id = 2;
+        User user =  testRestTemplate.getForObject(getUrl() + "/user/" + id, User.class);
 
+        when:
+        testRestTemplate.delete(getUrl() + "/user/" + id);
+
+        then:
+        try {
+            testRestTemplate.getForObject(getUrl() + "/user/" + id, User.class);
+        } catch (final HttpClientErrorException e){
+            assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    def "should delete all users"(){
+        given:
+        User expectedUser = new User(
+                "Meiram Sopy Temirzhanov",
+                "Male",
+                "87477775454",
+                "meiram@gmail.com"
+        );
+
+        when:
+        userService.saveUserWithCountry(expectedUser);
+        userService.deleteAllUsers();
+        User user = testRestTemplate.getForObject(getUrl() + "/user/1", User.class);
+
+        then:
+        user.getId() == null;
     }
 
 //    @Autowired
