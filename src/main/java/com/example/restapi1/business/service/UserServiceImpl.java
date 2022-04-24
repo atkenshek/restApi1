@@ -1,7 +1,7 @@
-package com.example.restapi1.Business.Service;
+package com.example.restapi1.business.service;
 
-import com.example.restapi1.Business.Entity.User;
-import com.example.restapi1.Repository.UserRepo;
+import com.example.restapi1.business.entity.User;
+import com.example.restapi1.repository.UserRepo;
 import com.example.restapi1.exception.StatusFailedException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

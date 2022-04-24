@@ -1,7 +1,7 @@
 package com.example.restapi1;
 
-import com.example.restapi1.Business.Entity.User;
-import com.example.restapi1.Business.Service.UserServiceImpl;
+import com.example.restapi1.business.entity.User;
+import com.example.restapi1.business.service.UserServiceImpl;
 import com.example.restapi1.exception.StatusFailedException;
 import com.example.restapi1.exception.UserAlreadyExistsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +14,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpClientErrorException;
+import spock.lang.Specification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,13 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestApi1Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RestApi1ApplicationTests {
+class RestApi1ApplicationTests extends Specification {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Autowired
     private UserServiceImpl userService;
+
 
     @LocalServerPort
     private int port;
@@ -39,6 +42,12 @@ class RestApi1ApplicationTests {
     @Test
     void contextLoads() {
     }
+
+
+    @Autowired
+    private MockMvc mockMvc;
+
+
 
 
     @Test

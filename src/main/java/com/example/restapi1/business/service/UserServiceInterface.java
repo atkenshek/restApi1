@@ -1,6 +1,6 @@
-package com.example.restapi1.Business.Service;
+package com.example.restapi1.business.service;
 
-import com.example.restapi1.Business.Entity.User;
+import com.example.restapi1.business.entity.User;
 import com.example.restapi1.exception.ResourceNotFoundException;
 import com.example.restapi1.exception.StatusFailedException;
 import com.example.restapi1.exception.UserAlreadyExistsException;

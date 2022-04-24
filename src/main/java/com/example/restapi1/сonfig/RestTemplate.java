@@ -1,4 +1,4 @@
-package com.example.restapi1.Config;
+package com.example.restapi1.сonfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

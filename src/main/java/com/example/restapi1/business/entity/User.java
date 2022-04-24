@@ -1,4 +1,4 @@
-package com.example.restapi1.Business.Entity;
+package com.example.restapi1.business.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
