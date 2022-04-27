@@ -47,4 +47,17 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
     }
+
+    public User(String fullName, String gender) {
+        this.fullName = fullName;
+        this.gender = gender;
+    }
+
+    public User(Long id, String fullName, String gender, String phoneNumber, String email) {
+        this.id = id;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
 }

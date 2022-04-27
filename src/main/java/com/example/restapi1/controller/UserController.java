@@ -22,12 +22,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/api//user")
+    @GetMapping("/api/user")
     public Iterable<User> getUsers(){
         return userService.getUsers();
     }
 
-    @GetMapping("/api//user/{id}")
+    @GetMapping("/api/user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable(value="id") Long userId) throws ResourceNotFoundException{
         final User user = userService.getUserById(userId);
         return ResponseEntity.ok().body(user);
