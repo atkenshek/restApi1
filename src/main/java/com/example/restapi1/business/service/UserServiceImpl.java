@@ -1,8 +1,11 @@
 package com.example.restapi1.business.service;
 
+import com.example.restapi1.annotations.Loggable;
+import com.example.restapi1.annotations.Metric;
 import com.example.restapi1.business.entity.User;
 import com.example.restapi1.repository.UserRepo;
 import com.example.restapi1.exception.StatusFailedException;
+import com.example.restapi1.сonfig.RestTemplateConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.restapi1.exception.ResourceNotFoundException;
@@ -16,19 +19,19 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 
-@Service @Slf4j
+@Service @Slf4j @Loggable
 public class UserServiceImpl implements UserServiceInterface{
 
     private final UserRepo userRepo;
-    private final RestTemplate restTemplate;
+    private final RestTemplateConfiguration restTemplate;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, RestTemplate restTemplate) {
+    public UserServiceImpl(UserRepo userRepo, RestTemplateConfiguration restTemplate) {
         this.userRepo = userRepo;
         this.restTemplate = restTemplate;
+
     }
 
     @Override
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserServiceInterface{
     }
     public User saveUserWithCountry(User user) throws JsonProcessingException, UserAlreadyExistsException, StatusFailedException{
             String userIP = getPublicIpAddress();
-            String userInfo = restTemplate.getForObject("http://ip-api.com/json/" + userIP + "?fields=status,country,city,as", String.class);
+            String userInfo = restTemplate.restTemplate().getForObject("http://ip-api.com/json/" + userIP + "?fields=status,country,city,as", String.class);
             ObjectMapper mapper = new ObjectMapper();
             Map map = mapper.readValue(userInfo, Map.class);
 
@@ -85,6 +88,7 @@ public class UserServiceImpl implements UserServiceInterface{
     }
 
     @Override
+    @Metric(name = "returned users")
     public Iterable<User> getUsers() {
         log.info("Selecting all users");
         return userRepo.findAll();

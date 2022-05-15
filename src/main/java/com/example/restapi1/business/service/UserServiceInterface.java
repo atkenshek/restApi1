@@ -1,5 +1,6 @@
 package com.example.restapi1.business.service;
 
+import com.example.restapi1.annotations.Metric;
 import com.example.restapi1.business.entity.User;
 import com.example.restapi1.exception.ResourceNotFoundException;
 import com.example.restapi1.exception.StatusFailedException;
@@ -11,6 +12,7 @@ import java.net.UnknownHostException;
 
 @Service
 public interface UserServiceInterface {
+     @Metric(name = "returned users")
      Iterable<User> getUsers();
      User saveUser(User user) throws UserAlreadyExistsException;
      User saveUserWithCountry(User user) throws JsonProcessingException, UserAlreadyExistsException, UnknownHostException, StatusFailedException;
