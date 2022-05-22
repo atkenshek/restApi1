@@ -38,24 +38,21 @@ public class MetricBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
+
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         Class beanClass = map.get(beanName);
         if (beanClass != null) {
-            return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(),
-                new InvocationHandler() {
-                    @Override
-                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if (method.isAnnotationPresent(Metric.class)) {
-                            metricAnnotationProcessor.initCounter(method.getAnnotation(Metric.class).name());
-                            metricAnnotationProcessor.process(method);
-                            Object value = method.invoke(bean, args);
-                            return value;
-                        } else {
-                            return method.invoke(bean, args);
-                        }
-                    }
-                });
+            return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), (proxy, method, args) -> {
+                if (method.isAnnotationPresent(Metric.class)) {
+                    metricAnnotationProcessor.initCounter(method.getAnnotation(Metric.class).name());
+                    metricAnnotationProcessor.process(method);
+                    Object value = method.invoke(bean, args);
+                    return value;
+                } else {
+                    return method.invoke(bean, args);
+                }
+            });
         }
         return bean;
     }

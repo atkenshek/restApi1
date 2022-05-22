@@ -16,6 +16,7 @@ public class MetricAnnotationProcessor implements AnnotationProcessor {
         this.meterRegistry = meterRegistry;
     }
 
+    @Override
     public void initCounter(String value) {
         this.counter = meterRegistry.counter("app.restApi1.", value);
     }

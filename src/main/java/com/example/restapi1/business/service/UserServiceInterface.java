@@ -19,6 +19,7 @@ public interface UserServiceInterface {
      User getUserById(Long id) throws ResourceNotFoundException;
      void updateUserById(Long id, User userDetails) throws ResourceNotFoundException;
      void deleteUserById(Long id) throws ResourceNotFoundException;
+     String findImageByName(Long id) throws ResourceNotFoundException;
      void deleteAllUsers();
 
 }

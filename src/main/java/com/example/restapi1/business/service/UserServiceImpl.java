@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserServiceInterface{
                 user.setCity((String) map.get("city"));
                 user.setISP((String) map.get("as"));
             }
-        User newUser = new User();
+        User newUser;
         if(!userRepo.existsByEmail(user.getEmail())){
             log.info("Saving new user {} to the database", user.getFullName());
             newUser = userRepo.save(user);
@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserServiceInterface{
     }
 
     @Override
-    @Metric(name = "returned users")
     public Iterable<User> getUsers() {
         log.info("Selecting all users");
         return userRepo.findAll();
@@ -114,6 +113,13 @@ public class UserServiceImpl implements UserServiceInterface{
     public void deleteUserById(Long id) throws ResourceNotFoundException {
         User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found for: " + id));
         userRepo.delete(user);
+    }
+
+    @Override
+    public String findImageByName(Long id) throws ResourceNotFoundException {
+        User user = userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User image not found for: " + id));
+        String imageName = user.getImageName();
+        return imageName;
     }
 
     @Override
