@@ -1,7 +1,6 @@
 package com.example.restapi1.business.service
 
 import com.example.restapi1.business.entity.User
-import com.example.restapi1.business.service.UserServiceImpl
 import com.example.restapi1.repository.UserRepo
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
@@ -13,7 +12,7 @@ class UserServiceTest extends Specification{
 
     def restTemplate = Mock(RestTemplate)
 
-    def userService = new UserServiceImpl(userRepository, restTemplate)
+    def userService = new UserServiceImpl(userRepository, restTemplate, config)
 
     def user = new User(
             1L,
@@ -50,6 +49,7 @@ class UserServiceTest extends Specification{
         then:
             savedUser == user
     }
+
 
     def "should update user"(){
         given:
